@@ -13,7 +13,6 @@ public class DatabaseAccess : IDatabaseAccess
     public async Task<IEnumerable<T>> GetDataAsync<T, U>(string storedProcedure, U parameters)
     {
         using IDbConnection connection = new SqlConnection(_connectionString);
-
         return await connection.QueryAsync<T>
             (storedProcedure, parameters, commandType: CommandType.StoredProcedure);
     }
@@ -21,8 +20,13 @@ public class DatabaseAccess : IDatabaseAccess
     public async Task SaveDataAsync<T>(string storedProcedure, T parameters)
     {
         using IDbConnection connection = new SqlConnection(_connectionString);
-
         await connection.ExecuteAsync
             (storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+    }
+
+    public async Task<IEnumerable<T>> ExecuteQueryAsync<T>(string query)
+    {
+        using IDbConnection connection = new SqlConnection(_connectionString);
+        return await connection.QueryAsync<T>(query);
     }
 }
