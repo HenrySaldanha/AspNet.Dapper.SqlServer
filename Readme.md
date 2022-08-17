@@ -17,7 +17,6 @@ This class fetches the database configuration and its methods execute the proced
         public async Task<IEnumerable<T>> GetDataAsync<T, U>(string storedProcedure, U parameters)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
-
             return await connection.QueryAsync<T>
                 (storedProcedure, parameters, commandType: CommandType.StoredProcedure);
         }
@@ -25,9 +24,14 @@ This class fetches the database configuration and its methods execute the proced
         public async Task SaveDataAsync<T>(string storedProcedure, T parameters)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
-
             await connection.ExecuteAsync
                 (storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<IEnumerable<T>> ExecuteQueryAsync<T>(string query)
+        {
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            return await connection.QueryAsync<T>(query);
         }
     }
 
@@ -42,7 +46,7 @@ The class methods define which procedure will be executed and what the expected 
         public BookRepository(IDatabaseAccess db) => _db = db;
 
         public async Task<IEnumerable<Book>> GetBooksAsync()
-            => await _db.GetDataAsync<Book, object>("dbo.GetAllBooksSP", new { });
+            => await _db.ExecuteQueryAsync<Book>("SELECT Id, Name, Description, ISBN, PublishedAt FROM dbo.Book");
 
         public async Task<Book?> GetBookAsync(int id) =>
             (await _db.GetDataAsync<Book, object>("dbo.GetBookByIdSP", new { Id = id })).FirstOrDefault();
@@ -56,7 +60,6 @@ The class methods define which procedure will be executed and what the expected 
         public async Task DeleteBookAsync(int id) =>
             await _db.SaveDataAsync("dbo.DeleteBookSP", new { Id = id });
     }
-
 
 ## Give a Star 
 If you found this Implementation helpful or used it in your Projects, do give it a star. Thanks!
