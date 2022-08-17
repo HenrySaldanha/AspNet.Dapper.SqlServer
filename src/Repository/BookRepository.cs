@@ -10,7 +10,7 @@ public class BookRepository : IBookRepository
     public BookRepository(IDatabaseAccess db) => _db = db;
 
     public async Task<IEnumerable<Book>> GetBooksAsync()
-        => await _db.GetDataAsync<Book, object>("dbo.GetAllBooksSP", new { });
+        => await _db.ExecuteQueryAsync<Book>("SELECT Id, Name, Description, ISBN, PublishedAt FROM dbo.Book");
 
     public async Task<Book?> GetBookAsync(int id) =>
         (await _db.GetDataAsync<Book, object>("dbo.GetBookByIdSP", new { Id = id })).FirstOrDefault();
