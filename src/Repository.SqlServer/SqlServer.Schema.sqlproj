@@ -62,7 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\tables\Book.sql" />
-    <Build Include="dbo\StoredProcedures\GetAllBooksSP.sql" />
     <Build Include="dbo\StoredProcedures\GetBookByIdSP.sql" />
     <Build Include="dbo\StoredProcedures\DeleteBookSP.sql" />
     <Build Include="dbo\StoredProcedures\InsertBookSP.sql" />
