@@ -1,7 +1,9 @@
 This is a project that uses Dapper, SqlServer and MinimalApi. It's just an example of how to use dapper to execute procedures in SqlServer.
 
 ## Packages
+
 Dapper
+
 System.Data.SqlClient
 
 ## Access Database Implementation
